@@ -16,8 +16,12 @@ class GenerateDatabaseConnections
      */
     public function handle($request, Closure $next)
     {
+
+
+
         foreach(Database::all() as $database) {
-            \Config::set('database.connections' . $database->id, [
+
+            \Config::set('database.connections.' . $database->location->short_name, [
                 'driver' => 'sqlsrv',
                 'url' => NULL,
                 'host' => $database->host,
@@ -29,7 +33,10 @@ class GenerateDatabaseConnections
                 'prefix' => '',
                 'prefix_indexes' => TRUE,
             ]);
+
         }
+
+        dd(\Config::get('database.connections'));
 
         return $next($request);
     }
